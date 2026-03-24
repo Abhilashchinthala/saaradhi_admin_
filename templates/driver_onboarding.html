@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block title %}Driver Onboarding & KYC - Gilded Admin{% endblock %}
+
+{% block extra_css %}
+.glass-panel {
+    background: rgba(19, 19, 19, 0.6);
+    backdrop-filter: blur(20px);
+}
+.gold-gradient {
+    background: linear-gradient(135deg, #f2ca50 0%, #d4af37 100%);
+}
+{% endblock %}
+
+{% block main_class %}overflow-y-auto{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-8 max-w-7xl mx-auto w-full">
+    <!-- Header & Stats Section -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+            <p class="font-label text-sm text-on-surface-variant mb-1">Driver Lifecycle Management</p>
+            <h1 class="font-headline text-4xl font-extrabold tracking-tight text-on-surface">KYC &amp; Onboarding</h1>
+        </div>
+        <div class="flex gap-4">
+            <div class="bg-surface-container-low p-4 rounded-lg flex flex-col items-start min-w-[140px]">
+                <span class="text-xs font-label text-on-surface-variant uppercase">Pending Reviews</span>
+                <span class="text-2xl font-headline font-bold text-primary">24</span>
+            </div>
+            <div class="bg-surface-container-low p-4 rounded-lg flex flex-col items-start min-w-[140px]">
+                <span class="text-xs font-label text-on-surface-variant uppercase">Approved Today</span>
+                <span class="text-2xl font-headline font-bold text-on-surface">142</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <!-- Driver Task List -->
+        <div class="lg:col-span-4 space-y-4">
+            <h3 class="font-headline text-lg font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">list_alt</span>
+                Review Queue
+            </h3>
+            <div class="space-y-3">
+                <div class="bg-surface-container-high p-4 rounded-xl border-l-4 border-primary shadow-lg ring-1 ring-primary/10">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="font-bold text-on-surface">Vikram Malhotra</p>
+                            <p class="text-xs text-on-surface-variant">ID: #DRV-88219</p>
+                        </div>
+                        <span class="bg-primary/10 text-primary px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                            UNDER REVIEW
+                        </span>
+                    </div>
+                    <div class="flex gap-2 text-[10px] text-on-surface-variant font-medium">
+                        <span class="bg-surface-container px-2 py-0.5 rounded">DL</span>
+                        <span class="bg-surface-container px-2 py-0.5 rounded">RC</span>
+                        <span class="bg-surface-container px-2 py-0.5 rounded">INSURANCE</span>
+                    </div>
+                </div>
+                
+                <div class="bg-surface-container p-4 rounded-xl hover:bg-surface-container-high transition-colors cursor-pointer group">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="font-bold text-on-surface group-hover:text-primary transition-colors">Arjun Reddy</p>
+                            <p class="text-xs text-on-surface-variant">ID: #DRV-88224</p>
+                        </div>
+                        <span class="bg-surface-variant text-on-surface-variant px-2 py-1 rounded text-[10px] font-bold">
+                            PENDING
+                        </span>
+                    </div>
+                    <div class="flex gap-2 text-[10px] text-on-surface-variant font-medium">
+                        <span class="bg-surface-container-low px-2 py-0.5 rounded">DL</span>
+                        <span class="bg-surface-container-low px-2 py-0.5 rounded text-primary/60 italic font-normal">Insurance Missing</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Detailed View (Right/Detail Column) -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="bg-surface-container-low rounded-2xl overflow-hidden">
+                <!-- Detail Header -->
+                <div class="p-8 border-b border-outline-variant/10 flex flex-wrap items-start justify-between gap-6">
+                    <div class="flex items-center gap-6">
+                        <div class="relative">
+                            <div class="w-20 h-20 rounded-xl border-2 border-primary/20 flex items-center justify-center bg-surface-container">
+                                <span class="material-symbols-outlined text-4xl text-on-surface-variant">person</span>
+                            </div>
+                            <span class="absolute -bottom-2 -right-2 bg-primary p-1.5 rounded-full text-on-primary">
+                                <span class="material-symbols-outlined text-sm leading-none" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            </span>
+                        </div>
+                        <div>
+                            <h2 class="font-headline text-2xl font-extrabold text-on-surface">Vikram Malhotra</h2>
+                            <div class="flex items-center gap-4 mt-1 text-sm text-on-surface-variant">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">location_on</span>
+                                    Hyderabad, TS
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs">phone</span>
+                                    +91 98765 43210
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <button class="px-6 py-2.5 rounded text-sm font-bold border border-outline-variant/30 text-on-surface hover:bg-surface-container transition-all">Reject</button>
+                        <button class="gold-gradient px-8 py-2.5 rounded text-sm font-bold text-on-primary hover:opacity-90 transition-all shadow-lg shadow-primary/10">Approve Driver</button>
+                    </div>
+                </div>
+                
+                <!-- Document Grid -->
+                <div class="p-8 space-y-8">
+                    <h4 class="font-label text-xs font-bold uppercase tracking-widest text-on-surface-variant">Uploaded Documents</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-surface-container rounded-xl p-4 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary">badge</span>
+                                    <span class="font-bold text-sm">Driving License</span>
+                                </div>
+                                <button class="text-primary text-xs font-semibold hover:underline">View Full</button>
+                            </div>
+                            <div class="aspect-[16/10] bg-surface-container-highest rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/20 relative group">
+                                <span class="material-symbols-outlined text-4xl text-on-surface-variant/30">image</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-[11px]">
+                                <div><p class="text-on-surface-variant">DL Number</p><p class="font-semibold">TS09/2021/0088219</p></div>
+                                <div><p class="text-on-surface-variant">Expiry Date</p><p class="font-semibold">12 Oct 2031</p></div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-surface-container rounded-xl p-4 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-3">
+                                    <span class="material-symbols-outlined text-primary">directions_car</span>
+                                    <span class="font-bold text-sm">Registration Certificate</span>
+                                </div>
+                                <button class="text-primary text-xs font-semibold hover:underline">View Full</button>
+                            </div>
+                            <div class="aspect-[16/10] bg-surface-container-highest rounded-lg flex items-center justify-center overflow-hidden border border-outline-variant/20 relative group">
+                                <span class="material-symbols-outlined text-4xl text-on-surface-variant/30">image</span>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 text-[11px]">
+                                <div><p class="text-on-surface-variant">Vehicle Number</p><p class="font-semibold">TS 07 HJ 4422</p></div>
+                                <div><p class="text-on-surface-variant">Model</p><p class="font-semibold">Toyota Innova Crysta</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

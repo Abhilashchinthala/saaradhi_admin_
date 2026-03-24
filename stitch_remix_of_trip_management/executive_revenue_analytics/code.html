@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SaaradhiGo Executive Revenue Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-surface": "#e5e2e1",
+              "primary-container": "#d4af37",
+              "surface-bright": "#393939",
+              "background": "#131313",
+              "on-background": "#e5e2e1",
+              "inverse-on-surface": "#313030",
+              "outline-variant": "#4d4635",
+              "inverse-primary": "#735c00",
+              "surface-container-highest": "#353534",
+              "surface": "#131313",
+              "surface-dim": "#131313",
+              "on-primary-fixed-variant": "#574500",
+              "outline": "#99907c",
+              "on-surface": "#e5e2e1",
+              "error": "#ffb4ab",
+              "surface-variant": "#353534",
+              "surface-tint": "#e9c349",
+              "on-secondary": "#3d2f00",
+              "on-error-container": "#ffdad6",
+              "on-primary-fixed": "#241a00",
+              "secondary": "#eac249",
+              "on-secondary-container": "#352800",
+              "tertiary-container": "#cdb157",
+              "surface-container-lowest": "#0e0e0e",
+              "surface-container-high": "#2a2a2a",
+              "primary-fixed": "#ffe088",
+              "secondary-fixed-dim": "#eac249",
+              "on-secondary-fixed-variant": "#584400",
+              "on-tertiary-container": "#554300",
+              "on-tertiary": "#3c2f00",
+              "secondary-fixed": "#ffe08b",
+              "on-primary-container": "#554300",
+              "primary": "#f2ca50",
+              "primary-fixed-dim": "#e9c349",
+              "on-tertiary-fixed-variant": "#574500",
+              "surface-container-low": "#1c1b1b",
+              "surface-container": "#201f1f",
+              "tertiary-fixed": "#ffe084",
+              "on-tertiary-fixed": "#231b00",
+              "secondary-container": "#b08c10",
+              "on-surface-variant": "#d0c5af",
+              "on-secondary-fixed": "#241a00",
+              "on-error": "#690005",
+              "tertiary-fixed-dim": "#e2c468",
+              "error-container": "#93000a",
+              "tertiary": "#ebcc70",
+              "on-primary": "#3c2f00"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-gold-gradient {
+            background: linear-gradient(135deg, #f2ca50 0%, #d4af37 100%);
+        }
+        .smoked-glass {
+            background: rgba(57, 57, 57, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4d4635;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased">
+<!-- Top Navigation Bar -->
+<nav class="fixed top-0 w-full z-50 smoked-glass border-b border-outline-variant/15 shadow-[0_40px_40px_rgba(212,175,55,0.08)] flex justify-between items-center px-8 h-20">
+<div class="flex items-center gap-8">
+<span class="text-xl font-headline font-bold tracking-tight text-primary-container">GoldRide Elite</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="font-headline text-sm font-medium text-primary border-b-2 border-primary pb-1" href="#">Analytics</a>
+<a class="font-headline text-sm font-medium text-on-surface opacity-70 hover:text-primary transition-colors duration-300" href="#">Revenue</a>
+<a class="font-headline text-sm font-medium text-on-surface opacity-70 hover:text-primary transition-colors duration-300" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-transform active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/20">
+<div class="text-right hidden sm:block">
+<p class="text-xs font-label text-on-surface-variant">Administrator</p>
+<p class="text-sm font-headline font-bold text-on-surface">SAARADHIGI ADMIN</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-primary">account_circle</span>
+</div>
+</div>
+</nav>
+<!-- Side Navigation Bar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-surface-container-low border-r border-outline-variant/10 hidden md:flex flex-col pt-24 pb-8 px-4">
+<div class="mb-8 px-4">
+<h2 class="font-headline text-lg font-black text-primary uppercase tracking-widest">Elite Fleet</h2>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-[0.2em]">Concierge Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-primary/10 to-transparent text-primary border-l-4 border-primary-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">insert_chart</span>
+<span class="font-label font-medium text-sm">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-highest transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label font-medium text-sm">Revenue</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-highest transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label font-medium text-sm">Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-highest transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">local_taxi</span>
+<span class="font-label font-medium text-sm">Fleet</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-highest transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label font-medium text-sm">Drivers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface opacity-60 hover:opacity-100 hover:bg-surface-container-highest transition-all duration-200 hover:translate-x-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label font-medium text-sm">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 space-y-1">
+<button class="w-full bg-gold-gradient text-on-primary font-headline font-bold py-3 rounded-lg mb-6 shadow-lg shadow-primary/10 active:scale-95 transition-transform">
+                Deploy New Fleet
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface opacity-60 hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label text-sm">Help</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-error/80 hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label text-sm">Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-28 px-8 pb-12 min-h-screen">
+<!-- Header Section -->
+<header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="max-w-2xl">
+<h1 class="text-4xl md:text-5xl font-headline font-extrabold text-on-surface tracking-tight mb-2">Aurelian Onyx</h1>
+<p class="text-primary font-label text-sm uppercase tracking-[0.3em] font-semibold mb-4">Executive Insights</p>
+<p class="text-on-surface-variant leading-relaxed max-w-xl">
+                    {{DATA:TEXT:TEXT_17}} Our current trajectory indicates a significant appreciation in high-tier bookings across urban centers.
+                </p>
+</div>
+<div class="flex items-center gap-4 bg-surface-container p-2 rounded-xl border border-outline-variant/10">
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface font-label text-sm rounded-lg hover:bg-surface-bright transition-colors">Daily</button>
+<button class="px-6 py-2 bg-gold-gradient text-on-primary font-label text-sm rounded-lg font-bold">Monthly</button>
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface font-label text-sm rounded-lg hover:bg-surface-bright transition-colors">Quarterly</button>
+</div>
+</header>
+<!-- Bento Grid Metrics -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+<!-- Metric 1: Total GBV -->
+<div class="md:col-span-2 bg-surface-container p-8 rounded-2xl relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl transition-all group-hover:bg-primary/10"></div>
+<div class="relative z-10 flex justify-between items-start mb-6">
+<div>
+<p class="text-on-surface-variant font-label text-xs uppercase tracking-wider mb-1">Gross Booking Value</p>
+<h3 class="text-4xl font-headline font-black text-on-surface">₹42.8M</h3>
+</div>
+<div class="bg-primary/10 px-3 py-1 rounded-full flex items-center gap-1 border border-primary/20">
+<span class="material-symbols-outlined text-sm text-primary" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="text-primary font-bold text-xs">+18.4%</span>
+</div>
+</div>
+<div class="h-24 flex items-end gap-1">
+<div class="flex-1 bg-outline-variant/20 h-[30%] rounded-t-sm group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex-1 bg-outline-variant/20 h-[45%] rounded-t-sm group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex-1 bg-outline-variant/20 h-[60%] rounded-t-sm group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex-1 bg-outline-variant/20 h-[50%] rounded-t-sm group-hover:bg-primary/20 transition-all duration-500"></div>
+<div class="flex-1 bg-primary/40 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-gold-gradient h-[100%] rounded-t-sm shadow-[0_0_15px_rgba(242,202,80,0.3)]"></div>
+</div>
+</div>
+<!-- Metric 2: Net Platform Revenue -->
+<div class="bg-surface-container p-8 rounded-2xl border border-outline-variant/5">
+<p class="text-on-surface-variant font-label text-xs uppercase tracking-wider mb-1">Platform Revenue</p>
+<h3 class="text-3xl font-headline font-bold text-on-surface mb-4">₹8.56M</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-on-surface-variant">Take Rate</span>
+<span class="text-primary font-bold">20.0%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-gold-gradient h-full w-[20%]"></div>
+</div>
+<p class="text-[10px] text-on-surface-variant italic">{{DATA:TEXT:TEXT_6}}</p>
+</div>
+</div>
+<!-- Metric 3: Active Fleet -->
+<div class="bg-surface-container p-8 rounded-2xl border border-outline-variant/5">
+<p class="text-on-surface-variant font-label text-xs uppercase tracking-wider mb-1">Fleet Performance</p>
+<h3 class="text-3xl font-headline font-bold text-on-surface mb-2">94.2%</h3>
+<p class="text-xs text-on-surface-variant mb-6">Average Vehicle Utilization</p>
+<div class="flex -space-x-3 overflow-hidden">
+<img alt="Driver Profile" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container" data-alt="Profile photo of a professional male driver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVOO08DmyAiZz_3BdwQis9H-9Urir1X_USLMRrhV_Aep5LtpxZi0P0d2Xie165Je0_BcMonFwUBgzKOi9I393Vp7z9K5OEnEU-wCxGa6k0HGRTSb-ETFcJTABNJCK1ZpKfn6k4qY1mtivUsm2s4wbj5FziBFYMkEPkrIqoBprxS6EszkTbpLKqXTaob2AzPFp08pPqwsxSYHGvOxm3yb1Ga_FlucpkCRjonNIxYuVEapWD7wQqdlPUONfCpEnp5m2cP11Ah1C-t7w1"/>
+<img alt="Driver Profile" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container" data-alt="Profile photo of an experienced female driver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQqGOC77NxEaYRKzlkQJWXI_-2Qn8SmJDWt0r1i1-jZ9O1Fdkn_mx6kgoFe7uYbMni4w2c-2nfsmdxnMiEjOITzNmKEkhJJLidH1qQ-LFvajPANll7G2nyZJMGAUWRQEm1NcVybV2l-5NYQ9WEC4KAme6XKidYWUSMlbC0lIwqbsWlCw_2gSDj9RcEBLMQh8cX-wHT9vLH8SD3wnjNJWUHsLiahcPJyRThy7qD4TlqovugFW0WNznF3D-SRM1zjZBM2MDmDYJdkxR3"/>
+<img alt="Driver Profile" class="inline-block h-8 w-8 rounded-full ring-2 ring-surface-container" data-alt="Profile photo of a taxi service driver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJvns51JL5d9SqSe7qeJ1_fd7hUYVwpPhjdraUYg4Lrqr6H-2XlNjfDfVw6jyof0Jo_FyM3jcqgQxF3gY1FL6vMJhKbLf15mfraVeu4mky_W9BRT5TS8d8gB48r7pmqEcHfbsyLOT1m4w5PYEiWQfgJKD2s8SD5bats1IAQku12yYP6mDhVskJvWGV3KLNkEM5dQCTIiTp0w38zYoSpOXpHPX7mhXbl8L-GGCDD_dfinRiXqYe6Rn0MXBHokw2y0ia-h3MT0jjiKR-"/>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest border-2 border-surface-container flex items-center justify-center text-[10px] font-bold text-primary">+120</div>
+</div>
+</div>
+</section>
+<!-- Asymmetric Layout: Revenue Split & Growth Metrics -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+<!-- Revenue Split by Vehicle Class (Glassmorphism Card) -->
+<div class="lg:col-span-2 bg-surface-container p-8 rounded-2xl">
+<div class="flex justify-between items-center mb-10">
+<h2 class="font-headline text-xl font-bold">Revenue Split by Class</h2>
+<span class="material-symbols-outlined text-on-surface-variant">more_vert</span>
+</div>
+<div class="flex flex-col md:flex-row gap-12 items-center">
+<!-- Donut Chart Visualization (CSS based) -->
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-width="20"></circle>
+<circle class="text-primary-container" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502" stroke-dashoffset="150" stroke-width="20"></circle>
+<circle class="text-primary" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502" stroke-dashoffset="350" stroke-width="20"></circle>
+<circle class="text-on-surface-variant" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502" stroke-dashoffset="450" stroke-width="20"></circle>
+</svg>
+<div class="absolute text-center">
+<span class="block text-2xl font-black font-headline">₹8.5M</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Total Net</span>
+</div>
+</div>
+<!-- Legend and Stats -->
+<div class="flex-1 w-full space-y-6">
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-primary shadow-[0_0_8px_rgba(242,202,80,0.5)]"></div>
+<span class="font-headline font-bold">SUV Elite</span>
+</div>
+<span class="text-sm font-label font-bold">₹4.2M (49%)</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[49%] group-hover:brightness-110 transition-all"></div>
+</div>
+</div>
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="font-headline font-bold">Business Sedan</span>
+</div>
+<span class="text-sm font-label font-bold">₹2.8M (33%)</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[33%] group-hover:brightness-110 transition-all"></div>
+</div>
+</div>
+<div class="group">
+<div class="flex justify-between items-end mb-2">
+<div class="flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-on-surface-variant"></div>
+<span class="font-headline font-bold">Luxury Auto</span>
+</div>
+<span class="text-sm font-label font-bold">₹1.5M (18%)</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-on-surface-variant w-[18%] group-hover:brightness-110 transition-all"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Monthly Growth Metrics (Vertical Feed) -->
+<div class="bg-surface-container-low p-8 rounded-2xl">
+<h2 class="font-headline text-xl font-bold mb-8">Growth Trajectory</h2>
+<div class="space-y-8">
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-primary"></div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-1">June 2024</p>
+<h4 class="font-headline font-bold text-on-surface">+22% MoM Revenue</h4>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Scaling efforts in Tier-1 cities led to unprecedented demand in the SUV segment.</p>
+</div>
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-primary-container"></div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-1">May 2024</p>
+<h4 class="font-headline font-bold text-on-surface">+14% MoM Revenue</h4>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Market stabilization following festive season surge; retention rates improved by 5%.</p>
+</div>
+<div class="relative pl-8 border-l border-outline-variant/30">
+<div class="absolute -left-[5px] top-0 w-[9px] h-[9px] rounded-full bg-outline"></div>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest font-bold mb-1">April 2024</p>
+<h4 class="font-headline font-bold text-on-surface">+9% MoM Revenue</h4>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Introduction of the 'Elite Concierge' feature for corporate accounts launched successfully.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Performance Table -->
+<section class="mt-8 bg-surface-container rounded-2xl overflow-hidden">
+<div class="p-8 border-b border-outline-variant/5 flex justify-between items-center">
+<h2 class="font-headline text-xl font-bold">Regional Performance Breakdown</h2>
+<button class="flex items-center gap-2 text-primary font-label text-sm font-bold hover:underline">
+                    Download Report
+                    <span class="material-symbols-outlined text-base">download</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-high/50">
+<th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Hub Location</th>
+<th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-right">Rides</th>
+<th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-right">GBV</th>
+<th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-right">Avg Ticket</th>
+<th class="px-8 py-4 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant text-center">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">location_city</span>
+</div>
+<span class="font-headline font-bold">Mumbai South</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right font-label">12,450</td>
+<td class="px-8 py-5 text-right font-headline font-bold">₹14.2M</td>
+<td class="px-8 py-5 text-right font-label text-on-surface-variant">₹1,140</td>
+<td class="px-8 py-5">
+<div class="flex justify-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> High Peak
+                                    </span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">location_city</span>
+</div>
+<span class="font-headline font-bold">Bengaluru Tech Park</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right font-label">10,120</td>
+<td class="px-8 py-5 text-right font-headline font-bold">₹9.8M</td>
+<td class="px-8 py-5 text-right font-label text-on-surface-variant">₹968</td>
+<td class="px-8 py-5">
+<div class="flex justify-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Optimal
+                                    </span>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest/30 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">location_city</span>
+</div>
+<span class="font-headline font-bold">Delhi NCR Center</span>
+</div>
+</td>
+<td class="px-8 py-5 text-right font-label">8,440</td>
+<td class="px-8 py-5 text-right font-headline font-bold">₹7.1M</td>
+<td class="px-8 py-5 text-right font-label text-on-surface-variant">₹841</td>
+<td class="px-8 py-5">
+<div class="flex justify-center">
+<span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-[10px] font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Steady
+                                    </span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Floating Action Button - Supressed on Analytics as per mandate, but added logic if contextually required elsewhere -->
+<!-- Suppression logic: On Analytics Dashboards, FAB usually clutter. We follow mandate to keep focus. -->
+</body></html>

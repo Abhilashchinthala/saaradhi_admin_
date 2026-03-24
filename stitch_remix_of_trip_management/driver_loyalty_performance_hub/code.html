@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SaaradhiGo - Aurelian Elite</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-surface": "#e5e2e1",
+                        "primary-container": "#d4af37",
+                        "surface-bright": "#393939",
+                        "background": "#131313",
+                        "on-background": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "outline-variant": "#4d4635",
+                        "inverse-primary": "#735c00",
+                        "surface-container-highest": "#353534",
+                        "surface": "#131313",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#574500",
+                        "outline": "#99907c",
+                        "on-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#353534",
+                        "surface-tint": "#e9c349",
+                        "on-secondary": "#3d2f00",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed": "#241a00",
+                        "secondary": "#eac249",
+                        "on-secondary-container": "#352800",
+                        "tertiary-container": "#cdb157",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed": "#ffe088",
+                        "secondary-fixed-dim": "#eac249",
+                        "on-secondary-fixed-variant": "#584400",
+                        "on-tertiary-container": "#554300",
+                        "on-tertiary": "#3c2f00",
+                        "secondary-fixed": "#ffe08b",
+                        "on-primary-container": "#554300",
+                        "primary": "#f2ca50",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed-variant": "#574500",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#201f1f",
+                        "tertiary-fixed": "#ffe084",
+                        "on-tertiary-fixed": "#231b00",
+                        "secondary-container": "#b08c10",
+                        "on-surface-variant": "#d0c5af",
+                        "on-secondary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#e2c468",
+                        "error-container": "#93000a",
+                        "tertiary": "#ebcc70",
+                        "on-primary": "#3c2f00"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #f2ca50 0%, #d4af37 100%);
+        }
+        .gold-glow {
+            box-shadow: 0 40px 40px rgba(212, 175, 55, 0.08);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #4d4635; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-[#131313] dark:bg-[#131313] backdrop-blur-md bg-opacity-60 flex justify-between items-center px-8 h-20 w-full border-b border-[#4d4635]/15 shadow-[0_40px_40px_rgba(212,175,55,0.08)] font-['Manrope'] antialiased">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tight text-[#D4AF37]">GoldRide Elite</span>
+<div class="hidden md:flex gap-6 items-center">
+<a class="text-[#D4AF37] border-b-2 border-[#D4AF37] pb-1 hover:text-[#f2ca50] transition-colors duration-300" href="#">Analytics</a>
+<a class="text-[#e5e2e1] opacity-70 hover:text-[#f2ca50] transition-colors duration-300" href="#">Revenue</a>
+<a class="text-[#e5e2e1] opacity-70 hover:text-[#f2ca50] transition-colors duration-300" href="#">Support</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-[#e5e2e1] opacity-70 hover:text-[#f2ca50] active:scale-95 transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full overflow-hidden border border-[#D4AF37]/30">
+<img alt="Admin" class="w-full h-full object-cover" data-alt="Administrator Profile avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPbY2i2i9ISG0-WJdtnfY65bxaTiCJ89--fnA1686n72Db3vxB1nEWN7IrYXXjidYK9X6Cv1TiG5Vdi_PF0oLawcQOTgEj9ULeM3tJCAQQGMRVUT_btD7uZ7TvslT9l2rVVSeNmmaMJSRuRbEuevlz9aX8qcINiz7_4Gc5hlJUkEq81r_M-7fR5uqKNoKZKrb4hgNRtIzLWSNu3bI8mSMTU3ws0c12UprJbiQcN44evXTPg1XdNMEjImz3iNdhGoL3DxQg39oN1j5Z"/>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#1c1b1b] dark:bg-[#1c1b1b] flex flex-col pt-24 pb-8 px-4 h-full bg-[#201f1f] border-r border-[#4d4635]/10 font-['Inter'] font-medium text-sm">
+<div class="mb-10 px-4">
+<h2 class="font-['Manrope'] text-lg font-black text-[#D4AF37]">Elite Fleet</h2>
+<p class="text-xs text-on-surface-variant opacity-60">Concierge Portal</p>
+</div>
+<div class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#f2ca50]/10 to-transparent text-[#f2ca50] border-l-4 border-[#D4AF37] hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">insert_chart</span>
+                Analytics
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1] opacity-60 hover:opacity-100 hover:bg-[#353534] transition-all duration-200 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">payments</span>
+                Revenue
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1] opacity-60 hover:opacity-100 hover:bg-[#353534] transition-all duration-200 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+                Support
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1] opacity-60 hover:opacity-100 hover:bg-[#353534] transition-all duration-200 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">local_taxi</span>
+                Fleet
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1] opacity-60 hover:opacity-100 hover:bg-[#353534] transition-all duration-200 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">group</span>
+                Drivers
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#e5e2e1] opacity-60 hover:opacity-100 hover:bg-[#353534] transition-all duration-200 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</div>
+<button class="mt-auto mx-4 py-3 rounded-lg gold-gradient text-on-primary font-bold shadow-lg shadow-primary/10 active:scale-95 transition-transform">
+            Deploy New Fleet
+        </button>
+<div class="mt-8 border-t border-outline-variant/10 pt-4 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-2 text-[#e5e2e1] opacity-60 hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+                Logout
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-[#e5e2e1] opacity-60 hover:opacity-100 transition-all" href="#">
+<span class="material-symbols-outlined text-sm">help_outline</span>
+                Help
+            </a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-28 px-12 pb-20 max-w-[1600px]">
+<!-- Editorial Header -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="font-label text-sm uppercase tracking-[0.2em] text-on-surface-variant font-semibold">Aurelian Elite</span>
+<h1 class="font-headline text-5xl font-extrabold text-on-background mt-2 tracking-tight">Fleet Loyalty Dashboard</h1>
+<p class="text-on-surface-variant mt-4 max-w-xl text-lg leading-relaxed">
+                    {{DATA:TEXT:TEXT_17}}
+                </p>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-low px-6 py-4 rounded-xl border border-outline-variant/5">
+<span class="block text-xs text-on-surface-variant font-medium">TOTAL MILES CLOCKED</span>
+<span class="text-3xl font-headline font-bold text-primary tracking-tighter">1,248,502</span>
+</div>
+<div class="bg-surface-container-low px-6 py-4 rounded-xl border border-outline-variant/5">
+<span class="block text-xs text-on-surface-variant font-medium">ACTIVE LOYALTY DRIVERS</span>
+<span class="text-3xl font-headline font-bold text-primary tracking-tighter">842</span>
+</div>
+</div>
+</header>
+<!-- Bento Grid Performance Section -->
+<div class="grid grid-cols-12 gap-8 mb-12">
+<!-- Gamified Goals: Golden Miles -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container rounded-2xl p-8 relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-20 -mt-20 blur-3xl transition-all group-hover:bg-primary/10"></div>
+<div class="flex justify-between items-start mb-10 relative z-10">
+<div>
+<h2 class="font-headline text-2xl font-bold">Golden Miles Progress</h2>
+<p class="text-on-surface-variant text-sm">Monthly fleet-wide performance incentive track</p>
+</div>
+<span class="material-symbols-outlined text-primary text-4xl" data-weight="fill">workspace_premium</span>
+</div>
+<div class="space-y-8 relative z-10">
+<div>
+<div class="flex justify-between text-sm mb-3">
+<span class="font-medium">Fleet Productivity Tier: <span class="text-primary">Diamond Elite</span></span>
+<span class="text-on-surface-variant">88% of Goal</span>
+</div>
+<div class="h-3 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full gold-gradient w-[88%] rounded-full shadow-[0_0_15px_rgba(242,202,80,0.3)]"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low p-5 rounded-xl border-l-2 border-primary">
+<span class="block text-xs text-on-surface-variant mb-1">UNLOCKED INCENTIVE</span>
+<span class="block text-lg font-bold">Fuel Rebate 12%</span>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl border-l-2 border-primary/40">
+<span class="block text-xs text-on-surface-variant mb-1">NEXT MILESTONE</span>
+<span class="block text-lg font-bold">Priority Support</span>
+</div>
+<div class="bg-surface-container-low p-5 rounded-xl border-l-2 border-primary/20">
+<span class="block text-xs text-on-surface-variant mb-1">REMAINING TARGET</span>
+<span class="block text-lg font-bold">12,400 mi</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Fleet-wide Health Metrics -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container p-6 rounded-2xl flex-1 flex flex-col justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary mb-3">speed</span>
+<h3 class="text-on-surface-variant font-medium text-sm mb-1 uppercase tracking-wider">Fleet Acceptance</h3>
+<div class="flex items-end gap-3">
+<span class="text-4xl font-headline font-extrabold">96.4%</span>
+<span class="text-emerald-400 text-sm mb-1 font-bold">+2.1% ↑</span>
+</div>
+</div>
+<div class="bg-surface-container p-6 rounded-2xl flex-1 flex flex-col justify-center border border-outline-variant/10">
+<span class="material-symbols-outlined text-primary mb-3">star</span>
+<h3 class="text-on-surface-variant font-medium text-sm mb-1 uppercase tracking-wider">Avg. Star Rating</h3>
+<div class="flex items-end gap-3">
+<span class="text-4xl font-headline font-extrabold">4.92</span>
+<span class="text-primary text-sm mb-1 font-bold">Top 1%</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Individual Driver Cards Section -->
+<div class="mb-12">
+<div class="flex justify-between items-center mb-8">
+<h2 class="font-headline text-3xl font-bold tracking-tight">Active Performance Cards</h2>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-highest text-sm rounded-lg hover:bg-surface-container-high transition-colors">Sort by Rating</button>
+<button class="px-4 py-2 bg-surface-container-highest text-sm rounded-lg hover:bg-surface-container-high transition-colors">Filter Fleet</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Driver Card 1 -->
+<div class="bg-surface-container p-6 rounded-2xl hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Portrait of a smiling professional male driver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGXpCqvIDvtm3PVrQkNLGPJ-YMzgV7IIJuSVXHGE1lL_5-lS_GdlD7gj2kkn3TTzZ0yUml0nAElcRpRbFzX8jdiweC7vBNAc7mPsh7Off0f_vKhzy3KVaRee_PpbP-MaH6erGDuupVd2h27NANseabvNR-eJsM1kBnrs0lZ-Jy7NtRJt4GqqBlxTIrn25nOJrlDBurf_xKSCviqUQVbAKZ-wojmITp-QadGjG71b_gcfehYmaaOZGwgyJOJWnNldMrCbUF2vqR4GfM"/>
+</div>
+<div>
+<h4 class="font-bold text-lg">Vikram Rathore</h4>
+<div class="flex items-center gap-2">
+<span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1 h-1 bg-primary rounded-full"></span>
+                                    Elite Status
+                                </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 border-t border-outline-variant/10 pt-4">
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Star Rating</span>
+<span class="font-bold text-primary flex items-center justify-center gap-1">
+                                4.98 <span class="material-symbols-outlined text-[14px]">star</span>
+</span>
+</div>
+<div class="text-center border-x border-outline-variant/10">
+<span class="block text-[10px] text-on-surface-variant uppercase">Acceptance</span>
+<span class="font-bold">99%</span>
+</div>
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Net Earnings</span>
+<span class="font-bold">$4,280</span>
+</div>
+</div>
+</div>
+<!-- Driver Card 2 -->
+<div class="bg-surface-container p-6 rounded-2xl hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Professional female driver with a confident look" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLHvsu0mA20awVi1Q6KF9lrlX0bE768gOf0xJg36tqlfDCbtI378NKbyuiBDr1Jy-E2sQRKLGmqQvjsxFvXgQjf-PfIe4l4Hmu6sdPLrofKzBSEer22ppWz6nlFRWWh4onUtX_72T2OM9cTuonIPX-zTydHFcwazVmW57ASnR6uAPidC8EJZoYONB6D6BY31PwWChSgvXI1xnmL7UPcrL4NB9lb3HHcYlbszj5j1-tCpD7LSCXo9asq--IcsCG9273g5JmnA2olAbM"/>
+</div>
+<div>
+<h4 class="font-bold text-lg">Priya Sharma</h4>
+<div class="flex items-center gap-2">
+<span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1 h-1 bg-primary rounded-full"></span>
+                                    Platinum
+                                </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 border-t border-outline-variant/10 pt-4">
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Star Rating</span>
+<span class="font-bold text-primary flex items-center justify-center gap-1">
+                                4.95 <span class="material-symbols-outlined text-[14px]">star</span>
+</span>
+</div>
+<div class="text-center border-x border-outline-variant/10">
+<span class="block text-[10px] text-on-surface-variant uppercase">Acceptance</span>
+<span class="font-bold">94%</span>
+</div>
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Net Earnings</span>
+<span class="font-bold">$3,912</span>
+</div>
+</div>
+</div>
+<!-- Driver Card 3 -->
+<div class="bg-surface-container p-6 rounded-2xl hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20">
+<img class="w-full h-full object-cover" data-alt="Senior experienced driver portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8aGe4zS5OsNnIhkWdC-fgunQuEairZih3rpj-x0upDJ2rwpqjr9GShBrK9LL00FAcjzQDdxazI5cVVvJw1-kmReYPydVj0fmaC668iaG7THHfgI89jU28R7olpr7Z9vM3Q5yTXVuaNmKebSeL37uFEzh3ELZ7roMjBBoFxBSWIlkH24Su2zEFKnKuZFdvk4Z0jYL7k563tgu_I_wYYyZFc3VB0-1TxKiWC7mno20f5345pGIfQ7QAQA4nhw_HOamXvNs2aPJaNPBr"/>
+</div>
+<div>
+<h4 class="font-bold text-lg">Arjun Singh</h4>
+<div class="flex items-center gap-2">
+<span class="text-xs bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1 h-1 bg-on-surface-variant rounded-full"></span>
+                                    Gold Tier
+                                </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 border-t border-outline-variant/10 pt-4">
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Star Rating</span>
+<span class="font-bold text-primary flex items-center justify-center gap-1">
+                                4.89 <span class="material-symbols-outlined text-[14px]">star</span>
+</span>
+</div>
+<div class="text-center border-x border-outline-variant/10">
+<span class="block text-[10px] text-on-surface-variant uppercase">Acceptance</span>
+<span class="font-bold">88%</span>
+</div>
+<div class="text-center">
+<span class="block text-[10px] text-on-surface-variant uppercase">Net Earnings</span>
+<span class="font-bold">$3,240</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Performance Leaderboard Section -->
+<section class="bg-surface-container rounded-2xl overflow-hidden border border-outline-variant/10">
+<div class="px-8 py-6 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-high/50">
+<h2 class="font-headline text-2xl font-bold">Top Performers Leaderboard</h2>
+<div class="text-primary text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined">trending_up</span>
+                    Updated Real-time
+                </div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-on-surface-variant text-xs uppercase tracking-widest border-b border-outline-variant/5">
+<th class="px-8 py-5 font-semibold">Rank</th>
+<th class="px-8 py-5 font-semibold">Driver</th>
+<th class="px-8 py-5 font-semibold">Performance Score</th>
+<th class="px-8 py-5 font-semibold">Current Incentive</th>
+<th class="px-8 py-5 font-semibold text-right">Loyalty Points</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-8 py-6">
+<div class="w-8 h-8 rounded-full gold-gradient flex items-center justify-center text-on-primary font-black shadow-lg shadow-primary/20">1</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Headshot of a top performing fleet driver" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8o3wOnewIcU_o4l6Wo4fib3AT9qBLXX6sHXn9DsGRvr_OeebjzXhiCqzL5JHjJrNZ6dybzoY_ukugSEnbQnGLkJ3ZJPs7w6YRSUH0zb-YPY-na6QT_RHEmWNgEf1jpVGClq8NkJWmBcAWSlCRfgMviCL21XC596GhVZLG6CJ80DaretZ83vl__ncN2jgxk1Jb_GOlMlToBk-RDFULdLMZeJg4ShYUzrEW3wEiSgeiZsv7rSWlea-zwO6dbjlDCAacMK1FN25RxcXG"/>
+</div>
+<span class="font-bold">Vikram Rathore</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="font-bold">992</span>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[98%]"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">Executive Lounge Access</span>
+</td>
+<td class="px-8 py-6 text-right font-headline font-extrabold text-primary">24,500 pts</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold">2</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Smiling fleet professional profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOz-orCIVLDRAPUX17-xtn9JnIgXO3-uQzy_lrF_PcWZ0uouDGF0PLBZPhRxOGRE99qIXY1fZvfSJh7kAoYd921MbLW27MfwBjTqGsEVax_5L79gg5R41qGACva7p5kojSnVVvVqkI6G8BJLr59Lu2ApsvhjbZwjjsWXXQKvQ4tGFL3J1T-g0XgiFUkjgJnz3UsbQo9O4RM1teTASEWJ4muHwJfnuEm15SlSo5xMxAJt7H7jvMYG61jni_j4lly5UeipGIEIr94fNi"/>
+</div>
+<span class="font-bold">Meera Joshi</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="font-bold">978</span>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[95%]"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">Bonus Multiplier x2</span>
+</td>
+<td class="px-8 py-6 text-right font-headline font-extrabold text-primary">22,120 pts</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-8 py-6">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold">3</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover" data-alt="Portrait of successful male fleet member" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUxAXvQBV5TupdQpW-aaUMsUgYOns5sRLubU2eewNimL1C7wgMff2NeWY_Kg3qkfZMQbjZpl5wVFDVQWAfI6znOQI1ovsyVK9Bbzok-843lTk7bKEw7g1tYfHJFMWC5phCokh98BNJuiYAhtdBOysdvJoXlOZocSnP9F7WNQ1Bp3aBDmJ9WhK1Gx8sCE7EgLyPDiqSix4gP4W65elMHSaWu7UhdJvErBy4Vjmx8TqF5jBZFKo5rv-bT6Q43zKoVSlGWj4R38unMelh"/>
+</div>
+<span class="font-bold">Rohan Verma</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<span class="font-bold">965</span>
+<div class="w-24 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[92%]"></div>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<span class="bg-primary/10 text-primary text-xs font-bold px-3 py-1 rounded-full border border-primary/20">Luxury Car Upgrade</span>
+</td>
+<td class="px-8 py-6 text-right font-headline font-extrabold text-primary">21,800 pts</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-4 bg-surface-container-low text-center">
+<button class="text-sm text-primary font-bold hover:underline transition-all">View All 124 Top Performers</button>
+</div>
+</section>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface-container glass-panel px-6 py-4 flex justify-between items-center z-50 border-t border-outline-variant/10">
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">insert_chart</span>
+<span class="text-[10px] font-bold">Analytics</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">local_taxi</span>
+<span class="text-[10px] font-bold">Fleet</span>
+</button>
+<div class="relative -mt-12">
+<button class="w-14 h-14 gold-gradient rounded-full shadow-lg shadow-primary/20 flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-bold">Drivers</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">Settings</span>
+</button>
+</nav>
+</body></html>
