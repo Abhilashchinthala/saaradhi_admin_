@@ -32,10 +32,12 @@
         </div>
         <div class="space-y-6">
             <div class="flex items-end justify-between">
-                <span class="text-4xl font-headline font-black text-on-surface">2.4<span class="text-lg text-primary">x</span></span>
+                <span class="text-4xl font-headline font-black text-on-surface">
+                    {% if peak_zone %}{{ peak_zone.multiplier }}{% else %}1.0{% endif %}<span class="text-lg text-primary">x</span>
+                </span>
                 <div class="text-right">
                     <p class="text-[10px] text-on-surface-variant uppercase">Peak Multiplier</p>
-                    <p class="text-sm font-bold text-on-surface">Downtown Core</p>
+                    <p class="text-sm font-bold text-on-surface">{% if peak_zone %}{{ peak_zone.zone_name }}{% else %}No Active Zones{% endif %}</p>
                 </div>
             </div>
             <div class="h-24 flex items-end gap-1 px-1">
@@ -53,11 +55,11 @@
             <div class="grid grid-cols-2 gap-4 pt-4 border-t border-outline-variant/10">
                 <div>
                     <p class="text-[10px] text-on-surface-variant uppercase">Avg Multiplier</p>
-                    <p class="text-lg font-bold text-on-surface">1.2x</p>
+                    <p class="text-lg font-bold text-on-surface">{{ avg_multiplier }}x</p>
                 </div>
                 <div>
                     <p class="text-[10px] text-on-surface-variant uppercase">Active Zones</p>
-                    <p class="text-lg font-bold text-on-surface">14</p>
+                    <p class="text-lg font-bold text-on-surface">{{ active_zones_count }}</p>
                 </div>
             </div>
         </div>
@@ -90,20 +92,20 @@
             <h3 class="font-headline text-lg font-bold text-primary mb-6">Global Fare Configuration</h3>
             <div class="space-y-6">
                 <div>
-                    <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Base Fare (USD)</label>
+                    <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Base Fare (₹)</label>
                     <div class="relative">
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="5.50"/>
+                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.base_fare }}"/>
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40">edit</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Multiplier</label>
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="1.5x"/>
+                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_multiplier }}x"/>
                     </div>
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Cap</label>
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="4.0x"/>
+                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_cap }}x"/>
                     </div>
                 </div>
                 <div class="pt-4">
@@ -137,24 +139,30 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-outline-variant/5">
+                    {% for zone in surge_zones %}
                     <tr class="hover:bg-surface-container-high/50 transition-colors group">
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
                                 <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(212,175,55,0.6)]"></div>
-                                <span class="text-sm font-bold text-on-surface">Downtown Central</span>
+                                <span class="text-sm font-bold text-on-surface">{{ zone.zone_name }}</span>
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded border border-primary/20">2.4x</span>
+                            <span class="px-2 py-1 bg-primary/10 text-primary text-xs font-bold rounded border border-primary/20">{{ zone.multiplier }}x</span>
                         </td>
-                        <td class="px-6 py-4 text-sm text-on-surface-variant">1,240</td>
-                        <td class="px-6 py-4 text-sm text-on-surface-variant">82</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">{{ zone.requests_per_hour }}</td>
+                        <td class="px-6 py-4 text-sm text-on-surface-variant">{{ zone.active_drivers }}</td>
                         <td class="px-6 py-4 text-right">
                             <button class="text-on-surface-variant hover:text-primary transition-colors">
                                 <span class="material-symbols-outlined text-lg">more_vert</span>
                             </button>
                         </td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-on-surface-variant text-sm">No active surge zones.</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

@@ -33,7 +33,7 @@
                 <span class="text-[10px] uppercase tracking-tighter text-on-surface-variant opacity-60">Network Status</span>
                 <span class="text-sm font-bold text-primary flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-                    Optimum Efficiency
+                    {{ network_status }}
                 </span>
             </div>
         </div>
@@ -84,24 +84,19 @@
                 <span class="text-[10px] px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 font-bold uppercase tracking-tighter">Next 45m</span>
             </div>
             <div class="space-y-4">
+                {% for zone in demand_zones %}
                 <div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:border-primary/30 transition-all cursor-pointer group">
                     <div class="flex justify-between items-start">
                         <div>
-                            <p class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">Financial District (BKC)</p>
-                            <p class="text-xs text-on-surface-variant mt-1">High volume exit predicted at 18:00</p>
+                            <p class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">{{ zone.zone_name }}</p>
+                            <p class="text-xs text-on-surface-variant mt-1">{{ zone.reason }} at {{ zone.predicted_at_time }}</p>
                         </div>
-                        <span class="text-2xl font-black text-primary">2.1x</span>
+                        <span class="text-2xl font-black text-primary">{{ zone.predicted_surge }}x</span>
                     </div>
                 </div>
-                <div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:border-primary/30 transition-all cursor-pointer group">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">Airport Terminal 2</p>
-                            <p class="text-xs text-on-surface-variant mt-1">Arrival wave incoming (14 flights)</p>
-                        </div>
-                        <span class="text-2xl font-black text-primary">1.8x</span>
-                    </div>
-                </div>
+                {% empty %}
+                <p class="text-on-surface-variant text-sm text-center py-4">No predicted surge zones.</p>
+                {% endfor %}
             </div>
         </section>
         
@@ -115,21 +110,25 @@
                     <div>
                         <div class="flex justify-between text-xs mb-2">
                             <span class="opacity-60">Supply / Demand Ratio</span>
-                            <span class="font-bold text-error">Critical Deficit (-12%)</span>
+                            {% if deficit_pct > 20 %}
+                            <span class="font-bold text-error">Critical Deficit (-{{ deficit_pct }}%)</span>
+                            {% else %}
+                            <span class="font-bold text-primary">Healthy (+{{ supply_ratio }}%)</span>
+                            {% endif %}
                         </div>
                         <div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden flex">
-                            <div class="h-full w-[44%] bg-primary"></div>
-                            <div class="h-full w-[56%] bg-error/40"></div>
+                            <div class="h-full bg-primary" style="width:{{ supply_ratio }}%"></div>
+                            <div class="h-full bg-error/40" style="width:{{ deficit_pct }}%"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
                             <span class="text-[10px] text-on-surface-variant block mb-1">Active Drivers</span>
-                            <span class="text-xl font-headline font-extrabold text-on-background">1,248</span>
+                            <span class="text-xl font-headline font-extrabold text-on-background">{{ active_drivers }}</span>
                         </div>
                         <div class="p-3 bg-surface-container-lowest rounded-lg border border-outline-variant/10">
                             <span class="text-[10px] text-on-surface-variant block mb-1">Unmet Requests</span>
-                            <span class="text-xl font-headline font-extrabold text-error">482</span>
+                            <span class="text-xl font-headline font-extrabold {% if pending_rides > 100 %}text-error{% else %}text-primary{% endif %}">{{ pending_rides }}</span>
                         </div>
                     </div>
                 </div>
