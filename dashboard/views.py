@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Q
+from django.utils.dateparse import parse_date
+from django.http import JsonResponse, HttpResponseRedirect
+from django.urls import reverse
 from decimal import Decimal
-
-from .models import Driver, Vehicle, Ride, SupportTicket, GlobalConfiguration, SurgeZone, HeatmapDemand
+from .models import Driver, Vehicle, Ride, SupportTicket, GlobalConfiguration, SurgeZone, HeatmapDemand, DispatchActionLog
 
 
 def login_view(request):
@@ -64,8 +66,17 @@ def dispute_support_view(request):
 
 @login_required(login_url='login')
 def executive_revenue_view(request):
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+
     # Compute GBV from completed rides
     completed_rides = Ride.objects.filter(status='COMPLETED')
+    
+    if start_date_str:
+        completed_rides = completed_rides.filter(date__date__gte=parse_date(start_date_str))
+    if end_date_str:
+        completed_rides = completed_rides.filter(date__date__lte=parse_date(end_date_str))
+
     gbv = completed_rides.aggregate(total=Sum('fare'))['total'] or Decimal('0')
     platform_revenue = gbv * Decimal('0.20')
     take_rate = 20.0
@@ -95,6 +106,8 @@ def executive_revenue_view(request):
         'fleet_utilization': fleet_utilization,
         'class_breakdown': class_breakdown,
         'total_rides': completed_rides.count(),
+        'start_date': start_date_str,
+        'end_date': end_date_str,
     }
     return render(request, 'executive_revenue.html', context)
 
@@ -107,10 +120,19 @@ def driver_loyalty_view(request):
 
 @login_required(login_url='login')
 def fare_surge_view(request):
-    # Get or create a single global config row
     config, _ = GlobalConfiguration.objects.get_or_create(pk=1)
-    surge_zones = SurgeZone.objects.filter(is_active=True).order_by('-multiplier')
+    
+    if request.method == 'POST':
+        if 'update_global' in request.POST:
+            config.base_fare = Decimal(request.POST.get('base_fare', config.base_fare))
+            config.surge_multiplier = Decimal(request.POST.get('surge_multiplier', config.surge_multiplier))
+            config.surge_cap = Decimal(request.POST.get('surge_cap', config.surge_cap))
+            config.per_km_rate = Decimal(request.POST.get('per_km_rate', config.per_km_rate))
+            config.per_min_rate = Decimal(request.POST.get('per_min_rate', config.per_min_rate))
+            config.save()
+            return HttpResponseRedirect(reverse('fare_surge'))
 
+    surge_zones = SurgeZone.objects.filter(is_active=True).order_by('-multiplier')
     peak_zone = surge_zones.first()
     avg_multiplier = 0
     if surge_zones.exists():
@@ -160,6 +182,20 @@ def predictive_heatmaps_view(request):
         'supply_ratio': supply_ratio,
         'deficit_pct': deficit_pct,
         'network_status': 'Optimum Efficiency' if deficit_pct < 20 else 'High Demand',
+        'dispatch_logs': DispatchActionLog.objects.all().order_by('-created_at')[:5],
     }
     return render(request, 'predictive_heatmaps.html', context)
 
+
+@login_required
+def dispatch_alert_view(request):
+    if request.method == 'POST':
+        zone_id = request.POST.get('zone_id')
+        zone = HeatmapDemand.objects.get(id=zone_id)
+        DispatchActionLog.objects.create(
+            zone_name=zone.zone_name,
+            admin_user=request.user.username,
+            details=f"Manual dispatch alert triggered for {zone.zone_name}."
+        )
+        return JsonResponse({'status': 'ok', 'message': f'Alert dispatched for {zone.zone_name}'})
+    return JsonResponse({'status': 'error'}, status=400)

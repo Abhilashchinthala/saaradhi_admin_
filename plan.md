@@ -7,34 +7,34 @@ The objective is to transform the remaining static pages (`executive_revenue.htm
 
 We will introduce a phased approach to building the dynamic dashboard components.
 
-### Phase 1: Core Dynamic Data Integration (Current Focus)
-In this phase, we will connect the currently static templates to the Django backend using mock data and backend calculations.
+### Phase 2: Real-time WebSocket Integration (Current Focus)
+In this phase, we will integrate Django Channels to support real-time updates for driver locations, ride requests, and trip statuses.
 
-#### [MODIFY] `dashboard/models.py`
-- Add `SurgeZone` model to store active surge areas, multipliers, and request counts.
-- Add `GlobalConfiguration` model for base fare, surge multipliers, and caps.
-- Add `HeatmapDemand` model to store zone-wise demand for the predictive pulse.
+#### Infrastructure Setup
+- **[NEW]** Install dependencies: `daphne`, `channels`, `channels-redis`.
+- **[MODIFY] [settings.py](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/saradhigo_admin/settings.py)**:
+    - Add `daphne` to `INSTALLED_APPS` (at the top).
+    - Add `channels` to `INSTALLED_APPS`.
+    - Set `ASGI_APPLICATION = 'saradhigo_admin.asgi.application'`.
+    - Configure `CHANNEL_LAYERS` (using `InMemoryChannelLayer` for local dev or `RedisChannelLayer` if Redis is available).
+- **[MODIFY] [asgi.py](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/saradhigo_admin/asgi.py)**:
+    - Wrap the application with `ProtocolTypeRouter` and `URLRouter`.
+    - Add `AuthMiddlewareStack`.
 
-#### [MODIFY] `dashboard/views.py`
-- `executive_revenue_view`: Compute total gross booking value (GBV), platform revenue (20% take rate), and split revenue by vehicle class using the existing `Ride` model.
-- `fare_surge_view`: Fetch global configuration and active surge zones from the database.
-- `predictive_heatmaps_view`: Pass data regarding active drivers, unmet requests, and predicted surge zones.
-- `login_view`: Implement basic authentication or redirect logic.
+#### Backend Implementation
+- **[NEW] [consumers.py](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/dashboard/consumers.py)**:
+    - `DriverLocationConsumer`: Handle `ws/driver/location/`. Broadcast location to groups.
+    - `RideRequestConsumer`: Handle `ws/ride/request/`. Broadcast new ride requests to nearby drivers.
+    - `TripStatusConsumer`: Handle `ws/ride/trip/<trip_id>/`. Manage trip lifecycle updates.
+- **[NEW] [routing.py](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/dashboard/routing.py)**:
+    - Define `websocket_urlpatterns`.
 
-#### [MODIFY] `templates/executive_revenue.html`
-- Replace hardcoded revenue numbers (₹42.8M, etc.) with Django template tags `{{ total_revenue }}`, `{{ platform_revenue }}`, etc.
-
-#### [MODIFY] `templates/fare_surge.html`
-- Render the 'Active Surge Zones' table using a `{% for zone in surge_zones %}` loop.
-- Populate the Global Configuration form with dynamic values.
-
-#### [MODIFY] `templates/predictive_heatmaps.html`
-- Replace hardcoded "Predicted Surge" and "Network Balance" numbers with backend variables.
-
-### Phase 2: Real-time WebSocket Integration (Future)
-- Integrate Django Channels.
-- Set up WebSocket consumers as per `WEBSOCKET_API_DOCS.md` (e.g., `ws/driver/location/`).
-- Update the Fleet Monitor and Predictive Heatmaps to reflect real-time driver coordinates and live demand pulses.
+#### Frontend Integration
+- **[MODIFY] [fleet_monitor.html](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/templates/fleet_monitor.html)**:
+    - Connect to `ws/driver/location/`.
+    - Update car markers on the map based on incoming telemetry.
+- **[MODIFY] [predictive_heatmaps.html](file:///c:/Users/chint/OneDrive/Desktop/saradhigo/templates/predictive_heatmaps.html)**:
+    - Integrate live demand pulses if applicable.
 
 ### Phase 3: Advanced Analytics and Actions (Future)
 - Implement date-range filtering for Executive Revenue.

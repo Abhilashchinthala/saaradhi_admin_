@@ -85,7 +85,7 @@
             </div>
             <div class="space-y-4">
                 {% for zone in demand_zones %}
-                <div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:border-primary/30 transition-all cursor-pointer group">
+                <div onclick="dispatchAlert('{{ zone.id }}', '{{ zone.zone_name }}')" class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/5 hover:border-primary/30 transition-all cursor-pointer group">
                     <div class="flex justify-between items-start">
                         <div>
                             <p class="text-sm font-bold text-on-background group-hover:text-primary transition-colors">{{ zone.zone_name }}</p>
@@ -133,11 +133,101 @@
                     </div>
                 </div>
             </div>
-            <button class="w-full py-4 bg-transparent border border-primary/20 hover:border-primary/50 text-primary text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
+            <button onclick="dispatchAlert('{{ demand_zones.0.id }}', '{{ demand_zones.0.zone_name }}')" class="w-full py-4 bg-transparent border border-primary/20 hover:border-primary/50 text-primary text-xs font-bold uppercase tracking-widest rounded-xl transition-all">
                 Dispatch Supply Alerts
             </button>
         </section>
+
+        <section class="bg-surface-container rounded-2xl p-6 border border-outline-variant/10">
+            <h3 class="font-headline font-bold text-sm uppercase tracking-widest text-on-surface-variant mb-4">Recent Dispatch Logs</h3>
+            <div class="space-y-3">
+                {% for log in dispatch_logs %}
+                <div class="text-[10px] p-3 rounded bg-surface-container-lowest border border-outline-variant/5">
+                    <div class="flex justify-between mb-1">
+                        <span class="font-bold text-primary">{{ log.zone_name }}</span>
+                        <span class="opacity-40">{{ log.created_at|date:"H:i" }}</span>
+                    </div>
+                    <p class="text-on-surface-variant line-clamp-1">{{ log.details }}</p>
+                </div>
+                {% empty %}
+                <p class="text-xs text-on-surface-variant text-center opacity-40 py-2 italic font-label">No recent logs</p>
+                {% endfor %}
+            </div>
+        </section>
     </div>
 </div>
-</div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function dispatchAlert(zoneId, zoneName) {
+        if (!zoneId) return alert("Zone identifier missing.");
+        
+        try {
+            const response = await fetch('/dispatch-alert/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `zone_id=${zoneId}`
+            });
+            
+            const data = await response.json();
+            if (data.status === 'ok') {
+                alert(data.message);
+                window.location.reload(); // Reload to show the new log
+            } else {
+                alert("Error: " + (data.message || "Failed to dispatch alert"));
+            }
+        } catch (error) {
+            console.error("Dispatch error:", error);
+            alert("Network error while dispatching alert.");
+        }
+    }
+
+    const socket = new WebSocket(
+        (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
+        + window.location.host
+        + '/ws/admin/dashboard/'
+    );
+
+    socket.onopen = function(e) {
+        console.log("Heatmap WebSocket connected");
+    };
+
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.type === 'driver_location_update') {
+            // In a real app, we might update a heatmap layer here
+            // For now, let's just update the active driver count if it's new
+            updateMetadata();
+        }
+    };
+
+    function updateMetadata() {
+        // This is a placeholder for real-time aggregation
+        // In this demo, we'll just increment the count visually for effect
+        const driverElem = document.querySelector('.text-on-background[innerText*="{{ active_drivers }}"]') || document.querySelectorAll('.font-headline.font-extrabold.text-on-background')[1];
+        if (driverElem) {
+            let count = parseInt(driverElem.innerText);
+            if (!isNaN(count)) {
+                // Just a visual simulation for the heatmap demo
+            }
+        }
+    }
+</script>
 {% endblock %}

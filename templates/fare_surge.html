@@ -90,30 +90,42 @@
     <div class="col-span-12 lg:col-span-5 space-y-6">
         <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/5">
             <h3 class="font-headline text-lg font-bold text-primary mb-6">Global Fare Configuration</h3>
-            <div class="space-y-6">
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <input type="hidden" name="update_global" value="1">
                 <div>
                     <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Base Fare (₹)</label>
                     <div class="relative">
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.base_fare }}"/>
+                        <input name="base_fare" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.base_fare }}"/>
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40">edit</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Multiplier</label>
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_multiplier }}x"/>
+                        <input name="surge_multiplier" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_multiplier }}"/>
                     </div>
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Cap</label>
-                        <input class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_cap }}x"/>
+                        <input name="surge_cap" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_cap }}"/>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Per KM Rate (₹)</label>
+                        <input name="per_km_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_km_rate }}"/>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Per Min Rate (₹)</label>
+                        <input name="per_min_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_min_rate }}"/>
                     </div>
                 </div>
                 <div class="pt-4">
-                    <button class="w-full gold-gradient-bg text-on-primary font-headline font-bold py-4 rounded-lg text-sm active:scale-95 duration-200">
+                    <button type="submit" class="w-full gold-gradient-bg text-on-primary font-headline font-bold py-4 rounded-lg text-sm active:scale-95 duration-200 shadow-lg shadow-primary/20">
                         Update Global Config
                     </button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
     

@@ -32,11 +32,28 @@
             Our current trajectory indicates a significant appreciation in high-tier bookings across urban centers.
         </p>
     </div>
-    <div class="flex items-center gap-4 bg-surface-container p-2 rounded-xl border border-outline-variant/10">
-        <button class="px-6 py-2 bg-surface-container-highest text-on-surface font-label text-sm rounded-lg hover:bg-surface-bright transition-colors">Daily</button>
-        <button class="px-6 py-2 bg-gold-gradient text-on-primary font-label text-sm rounded-lg font-bold">Monthly</button>
-        <button class="px-6 py-2 bg-surface-container-highest text-on-surface font-label text-sm rounded-lg hover:bg-surface-bright transition-colors">Quarterly</button>
-    </div>
+    <form method="GET" class="flex flex-wrap items-center gap-4 bg-surface-container p-4 rounded-xl border border-outline-variant/10">
+        <div class="flex flex-col">
+            <label class="text-[10px] text-on-surface-variant uppercase font-bold mb-1 ml-1">Start Date</label>
+            <input type="date" name="start_date" value="{{ start_date }}" class="bg-surface-container-highest text-on-surface text-sm rounded-lg px-3 py-2 border border-outline-variant/20 focus:outline-none focus:border-primary">
+        </div>
+        <div class="flex flex-col">
+            <label class="text-[10px] text-on-surface-variant uppercase font-bold mb-1 ml-1">End Date</label>
+            <input type="date" name="end_date" value="{{ end_date }}" class="bg-surface-container-highest text-on-surface text-sm rounded-lg px-3 py-2 border border-outline-variant/20 focus:outline-none focus:border-primary">
+        </div>
+        <div class="flex items-end self-stretch pt-5">
+            <button type="submit" class="h-full px-6 bg-gold-gradient text-on-primary font-label text-xs rounded-lg font-bold shadow-lg shadow-primary/10 hover:scale-[1.02] active:scale-[0.98] transition-transform">
+                Apply Filter
+            </button>
+        </div>
+        {% if start_date or end_date %}
+        <div class="flex items-end self-stretch pt-5">
+            <a href="{% url 'executive_revenue' %}" class="h-full px-6 bg-surface-container-highest text-on-surface-variant font-label text-xs rounded-lg flex items-center hover:bg-surface-bright transition-colors">
+                Clear
+            </a>
+        </div>
+        {% endif %}
+    </form>
 </header>
 <section class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
     <div class="md:col-span-2 bg-surface-container p-8 rounded-2xl relative overflow-hidden group">

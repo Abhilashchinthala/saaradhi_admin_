@@ -12,4 +12,5 @@ urlpatterns = [
     path('fare-surge/', views.fare_surge_view, name='fare_surge'),
     path('payment-dashboard/', views.payment_dashboard_view, name='payment_dashboard'),
     path('predictive-heatmaps/', views.predictive_heatmaps_view, name='predictive_heatmaps'),
+    path('dispatch-alert/', views.dispatch_alert_view, name='dispatch_alert'),
 ]

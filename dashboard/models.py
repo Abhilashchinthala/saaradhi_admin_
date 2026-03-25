@@ -91,3 +91,14 @@ class HeatmapDemand(models.Model):
     def __str__(self):
         return f"{self.zone_name} - {self.predicted_surge}x at {self.predicted_at_time}"
 
+
+class DispatchActionLog(models.Model):
+    zone_name = models.CharField(max_length=100)
+    action_type = models.CharField(max_length=50, default="SUPPLY_ALERT")
+    admin_user = models.CharField(max_length=100)
+    details = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.action_type} for {self.zone_name} at {self.created_at}"
+
