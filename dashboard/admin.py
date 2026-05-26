@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Driver, Vehicle, Ride, SupportTicket, GlobalConfiguration, SurgeZone, HeatmapDemand
+from .models import Driver, Vehicle, Ride, SupportTicket, GlobalConfiguration, SurgeZone, HeatmapDemand, DriverDocument, AdminNotification
 
 admin.site.register(Driver)
 admin.site.register(Vehicle)
@@ -8,3 +8,5 @@ admin.site.register(SupportTicket)
 admin.site.register(GlobalConfiguration)
 admin.site.register(SurgeZone)
 admin.site.register(HeatmapDemand)
+admin.site.register(DriverDocument)
+admin.site.register(AdminNotification)

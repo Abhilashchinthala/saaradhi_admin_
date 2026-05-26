@@ -90,39 +90,41 @@
     <div class="col-span-12 lg:col-span-5 space-y-6">
         <div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/5">
             <h3 class="font-headline text-lg font-bold text-primary mb-6">Global Fare Configuration</h3>
-            <form method="POST" class="space-y-6">
+            <!-- Status message area -->
+            <div id="config-status" class="mb-4 hidden"></div>
+            <form id="global-config-form" class="space-y-6">
                 {% csrf_token %}
-                <input type="hidden" name="update_global" value="1">
                 <div>
                     <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Base Fare (₹)</label>
                     <div class="relative">
-                        <input name="base_fare" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.base_fare }}"/>
+                        <input id="cfg-base-fare" name="base_fare" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary transition-colors py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.base_fare }}"/>
                         <span class="absolute right-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant/40">edit</span>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Multiplier</label>
-                        <input name="surge_multiplier" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_multiplier }}"/>
+                        <input id="cfg-surge-multiplier" name="surge_multiplier" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_multiplier }}"/>
                     </div>
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Surge Cap</label>
-                        <input name="surge_cap" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_cap }}"/>
+                        <input id="cfg-surge-cap" name="surge_cap" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.surge_cap }}"/>
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Per KM Rate (₹)</label>
-                        <input name="per_km_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_km_rate }}"/>
+                        <input id="cfg-per-km" name="per_km_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_km_rate }}"/>
                     </div>
                     <div>
                         <label class="block text-[10px] text-on-surface-variant uppercase font-bold mb-2">Per Min Rate (₹)</label>
-                        <input name="per_min_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_min_rate }}"/>
+                        <input id="cfg-per-min" name="per_min_rate" class="w-full bg-surface-container-highest border-b border-outline-variant focus:border-primary py-3 px-4 text-on-surface font-bold outline-none rounded-t-lg" type="text" value="{{ config.per_min_rate }}"/>
                     </div>
                 </div>
                 <div class="pt-4">
-                    <button type="submit" class="w-full gold-gradient-bg text-on-primary font-headline font-bold py-4 rounded-lg text-sm active:scale-95 duration-200 shadow-lg shadow-primary/20">
-                        Update Global Config
+                    <button type="submit" id="update-config-btn" class="w-full gold-gradient-bg text-on-primary font-headline font-bold py-4 rounded-lg text-sm active:scale-95 duration-200 shadow-lg shadow-primary/20">
+                        <span id="update-config-btn-text">Update Global Config</span>
+                        <span id="update-config-btn-spinner" class="hidden material-symbols-outlined animate-spin text-sm ml-2">progress_activity</span>
                     </button>
                 </div>
             </form>
@@ -181,4 +183,76 @@
     </div>
 </div>
 </div>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function showConfigStatus(message, isError) {
+        const statusDiv = document.getElementById('config-status');
+        statusDiv.textContent = message;
+        statusDiv.className = 'mb-4 px-4 py-3 rounded-lg text-sm font-bold ' +
+            (isError ? 'bg-error/10 text-error border border-error/20' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20');
+        statusDiv.classList.remove('hidden');
+        setTimeout(function() { statusDiv.classList.add('hidden'); }, 5000);
+    }
+
+    document.getElementById('global-config-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        var btn = document.getElementById('update-config-btn');
+        var btnText = document.getElementById('update-config-btn-text');
+        var btnSpinner = document.getElementById('update-config-btn-spinner');
+
+        btn.disabled = true;
+        btnText.textContent = 'Saving...';
+        btnSpinner.classList.remove('hidden');
+
+        var formData = new URLSearchParams();
+        formData.append('base_fare', document.getElementById('cfg-base-fare').value);
+        formData.append('surge_multiplier', document.getElementById('cfg-surge-multiplier').value);
+        formData.append('surge_cap', document.getElementById('cfg-surge-cap').value);
+        formData.append('per_km_rate', document.getElementById('cfg-per-km').value);
+        formData.append('per_min_rate', document.getElementById('cfg-per-min').value);
+
+        try {
+            var response = await fetch('/api/global-config/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData
+            });
+
+            var data = await response.json();
+
+            if (data.status === 'ok') {
+                showConfigStatus('✓ ' + data.message, false);
+            } else {
+                var errors = data.errors ? JSON.stringify(data.errors) : (data.message || 'Unknown error');
+                showConfigStatus('✗ ' + errors, true);
+            }
+        } catch (error) {
+            console.error('Config update error:', error);
+            showConfigStatus('✗ Network error. Please try again.', true);
+        } finally {
+            btn.disabled = false;
+            btnText.textContent = 'Update Global Config';
+            btnSpinner.classList.add('hidden');
+        }
+    });
+</script>
 {% endblock %}

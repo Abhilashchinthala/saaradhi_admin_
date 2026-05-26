@@ -7,12 +7,15 @@ django.setup()
 
 from dashboard.models import (
     Driver, Vehicle, Ride, SupportTicket,
-    GlobalConfiguration, SurgeZone, HeatmapDemand
+    GlobalConfiguration, SurgeZone, HeatmapDemand,
+    DriverDocument, AdminNotification
 )
 
 
 def run():
     print("Clearing old data...")
+    AdminNotification.objects.all().delete()
+    DriverDocument.objects.all().delete()
     HeatmapDemand.objects.all().delete()
     SurgeZone.objects.all().delete()
     GlobalConfiguration.objects.all().delete()
@@ -22,10 +25,30 @@ def run():
     Driver.objects.all().delete()
 
     print("Creating Drivers...")
-    d1 = Driver.objects.create(name="Vikram Rathore",  status="ACTIVE",   rating=4.98, total_trips=1204, total_revenue=Decimal('4280.00'))
-    d2 = Driver.objects.create(name="Priya Sharma",    status="ON_TRIP",  rating=4.95, total_trips=850,  total_revenue=Decimal('3912.00'))
-    d3 = Driver.objects.create(name="Arjun Singh",     status="OFFLINE",  rating=4.89, total_trips=950,  total_revenue=Decimal('3240.00'))
-    d4 = Driver.objects.create(name="Elena Rodriguez", status="ACTIVE",   rating=4.92, total_trips=600,  total_revenue=Decimal('2100.00'))
+    d1 = Driver.objects.create(name="Vikram Rathore",  status="ACTIVE",   rating=4.98, total_trips=1204, total_revenue=Decimal('4280.00'), onboarding_status='APPROVED')
+    d2 = Driver.objects.create(name="Priya Sharma",    status="ON_TRIP",  rating=4.95, total_trips=850,  total_revenue=Decimal('3912.00'), onboarding_status='APPROVED')
+    d3 = Driver.objects.create(name="Arjun Singh",     status="OFFLINE",  rating=4.89, total_trips=950,  total_revenue=Decimal('3240.00'), onboarding_status='APPROVED')
+    d4 = Driver.objects.create(name="Elena Rodriguez", status="ACTIVE",   rating=4.92, total_trips=600,  total_revenue=Decimal('2100.00'), onboarding_status='APPROVED')
+    
+    # Onboarding drivers
+    d5 = Driver.objects.create(name="Vikram Malhotra", status="OFFLINE", rating=0.0, total_trips=0, total_revenue=Decimal('0.00'), onboarding_status='KYC_SUBMITTED')
+    d6 = Driver.objects.create(name="Arjun Reddy", status="OFFLINE", rating=0.0, total_trips=0, total_revenue=Decimal('0.00'), onboarding_status='PENDING_KYC')
+    d7 = Driver.objects.create(name="Rohan Mehra", status="OFFLINE", rating=0.0, total_trips=0, total_revenue=Decimal('0.00'), onboarding_status='REJECTED')
+
+    print("Creating Driver Documents...")
+    DriverDocument.objects.create(driver=d5, doc_type='DL', status='APPROVED', notes="Verified from transport department portal.")
+    DriverDocument.objects.create(driver=d5, doc_type='RC', status='PENDING', notes="")
+    DriverDocument.objects.create(driver=d5, doc_type='INSURANCE', status='PENDING', notes="")
+    DriverDocument.objects.create(driver=d5, doc_type='AADHAAR', status='APPROVED', notes="e-Aadhaar OK")
+
+    DriverDocument.objects.create(driver=d6, doc_type='DL', status='PENDING', notes="")
+    DriverDocument.objects.create(driver=d6, doc_type='RC', status='PENDING', notes="")
+
+    print("Creating Admin Notifications...")
+    AdminNotification.objects.create(title="Urgent Support Ticket", message="Sebastian Vancore raised an urgent fare dispute ticket.", notification_type="ALERT", is_read=False)
+    AdminNotification.objects.create(title="KYC Submission", message="Vikram Malhotra submitted documents for review.", notification_type="INFO", is_read=False)
+    AdminNotification.objects.create(title="System Alert", message="Surge multiplier Cap has been reached on Downtown Central.", notification_type="WARNING", is_read=False)
+
 
     print("Creating Vehicles...")
     Vehicle.objects.create(make_model="Toyota Camry",    license_plate="MH01 AB 1234", class_type="Business Sedan", status="AVAILABLE",  driver=d1)
@@ -74,7 +97,7 @@ def run():
     HeatmapDemand.objects.create(zone_name="Airport Terminal 2",       predicted_surge=Decimal('1.8'), predicted_at_time="19:30", reason="Arrival wave incoming (14 flights)", is_active=True)
     HeatmapDemand.objects.create(zone_name="Bandra West",              predicted_surge=Decimal('1.6'), predicted_at_time="20:00", reason="Evening dining surge expected",       is_active=True)
 
-    print("✅ Mock data loaded successfully!")
+    print("Mock data loaded successfully!")
 
 
 if __name__ == '__main__':

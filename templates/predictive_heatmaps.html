@@ -159,11 +159,11 @@
 
 <script>
     function getCookie(name) {
-        let cookieValue = null;
+        var cookieValue = null;
         if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
                     cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
                     break;
@@ -173,61 +173,116 @@
         return cookieValue;
     }
 
+    function showToast(message, isError) {
+        // Remove any existing toast
+        var existing = document.getElementById('dispatch-toast');
+        if (existing) existing.remove();
+
+        var toast = document.createElement('div');
+        toast.id = 'dispatch-toast';
+        toast.className = 'fixed top-6 right-6 z-50 px-5 py-3 rounded-xl border text-sm font-bold shadow-2xl transition-all duration-300 ' +
+            (isError ? 'bg-error/10 text-error border-error/20' : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20');
+        toast.style.backdropFilter = 'blur(12px)';
+        toast.textContent = (isError ? '✗ ' : '✓ ') + message;
+        document.body.appendChild(toast);
+        setTimeout(function() { toast.remove(); }, 4000);
+    }
+
+    function prependDispatchLog(zoneName, details) {
+        var container = document.querySelector('.space-y-3');
+        if (!container) return;
+
+        var now = new Date();
+        var timeStr = ('0' + now.getHours()).slice(-2) + ':' + ('0' + now.getMinutes()).slice(-2);
+
+        var div = document.createElement('div');
+        div.className = 'text-[10px] p-3 rounded bg-surface-container-lowest border border-outline-variant/5';
+        div.innerHTML = '<div class="flex justify-between mb-1">' +
+            '<span class="font-bold text-primary">' + zoneName + '</span>' +
+            '<span class="opacity-40">' + timeStr + '</span>' +
+            '</div>' +
+            '<p class="text-on-surface-variant line-clamp-1">' + details + '</p>';
+
+        // Remove "No recent logs" placeholder if present
+        var placeholder = container.querySelector('.italic');
+        if (placeholder) placeholder.remove();
+
+        container.insertBefore(div, container.firstChild);
+
+        // Keep only last 10 logs
+        while (container.children.length > 10) {
+            container.lastChild.remove();
+        }
+    }
+
+    var trackedDriverIds = {};
+
     async function dispatchAlert(zoneId, zoneName) {
-        if (!zoneId) return alert("Zone identifier missing.");
-        
+        if (!zoneId) {
+            showToast('Zone identifier missing.', true);
+            return;
+        }
+
         try {
-            const response = await fetch('/dispatch-alert/', {
+            var response = await fetch('/dispatch-alert/', {
                 method: 'POST',
                 headers: {
                     'X-CSRFToken': getCookie('csrftoken'),
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: `zone_id=${zoneId}`
+                body: 'zone_id=' + zoneId
             });
-            
-            const data = await response.json();
+
+            var data = await response.json();
             if (data.status === 'ok') {
-                alert(data.message);
-                window.location.reload(); // Reload to show the new log
+                showToast(data.message, false);
+                prependDispatchLog(zoneName, 'Manual dispatch alert triggered for ' + zoneName + '.');
             } else {
-                alert("Error: " + (data.message || "Failed to dispatch alert"));
+                showToast(data.message || 'Failed to dispatch alert', true);
             }
         } catch (error) {
-            console.error("Dispatch error:", error);
-            alert("Network error while dispatching alert.");
+            console.error('Dispatch error:', error);
+            showToast('Network error while dispatching alert.', true);
         }
     }
 
-    const socket = new WebSocket(
+    var socket = new WebSocket(
         (window.location.protocol === 'https:' ? 'wss://' : 'ws://')
         + window.location.host
         + '/ws/admin/dashboard/'
     );
 
     socket.onopen = function(e) {
-        console.log("Heatmap WebSocket connected");
+        console.log('Heatmap WebSocket connected');
     };
 
     socket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
+        var data = JSON.parse(e.data);
         if (data.type === 'driver_location_update') {
-            // In a real app, we might update a heatmap layer here
-            // For now, let's just update the active driver count if it's new
-            updateMetadata();
+            var driverId = data.driver_id;
+            if (!trackedDriverIds[driverId]) {
+                trackedDriverIds[driverId] = true;
+                updateActiveDriverCount(Object.keys(trackedDriverIds).length);
+            }
         }
     };
 
-    function updateMetadata() {
-        // This is a placeholder for real-time aggregation
-        // In this demo, we'll just increment the count visually for effect
-        const driverElem = document.querySelector('.text-on-background[innerText*="{{ active_drivers }}"]') || document.querySelectorAll('.font-headline.font-extrabold.text-on-background')[1];
-        if (driverElem) {
-            let count = parseInt(driverElem.innerText);
-            if (!isNaN(count)) {
-                // Just a visual simulation for the heatmap demo
+    function updateActiveDriverCount(count) {
+        // Find the "Active Drivers" count element and update it
+        var driverElems = document.querySelectorAll('.font-headline.font-extrabold.text-on-background');
+        driverElems.forEach(function(el) {
+            var text = el.innerText.trim();
+            if (text && !isNaN(parseInt(text)) && el.closest('.p-3')) {
+                var label = el.previousElementSibling;
+                if (label && label.innerText.trim() === 'Active Drivers') {
+                    el.innerText = count;
+                }
             }
-        }
+        });
     }
+
+    socket.onclose = function(e) {
+        console.error('Heatmap WebSocket closed unexpectedly');
+    };
 </script>
 {% endblock %}

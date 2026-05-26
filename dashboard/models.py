@@ -7,9 +7,30 @@ class Driver(models.Model):
     rating = models.FloatField()
     total_trips = models.IntegerField()
     total_revenue = models.DecimalField(max_digits=10, decimal_places=2)
+    onboarding_status = models.CharField(
+        max_length=20,
+        choices=[
+            ('PENDING_KYC', 'Pending KYC'),
+            ('KYC_SUBMITTED', 'KYC Submitted'),
+            ('APPROVED', 'Approved'),
+            ('REJECTED', 'Rejected')
+        ],
+        default='APPROVED'
+    )
 
     def __str__(self):
         return self.name
+
+    @property
+    def loyalty_tier(self):
+        if self.total_trips >= 1000 and self.rating >= 4.9:
+            return 'PLATINUM'
+        elif self.total_trips >= 500 and self.rating >= 4.7:
+            return 'GOLD'
+        elif self.total_trips >= 200 and self.rating >= 4.5:
+            return 'SILVER'
+        else:
+            return 'BRONZE'
 
 
 class Vehicle(models.Model):
@@ -101,4 +122,47 @@ class DispatchActionLog(models.Model):
 
     def __str__(self):
         return f"{self.action_type} for {self.zone_name} at {self.created_at}"
+
+
+class DriverDocument(models.Model):
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE, related_name='documents')
+    doc_type = models.CharField(
+        max_length=20,
+        choices=[
+            ('DL', 'Driving License'),
+            ('RC', 'Registration Certificate'),
+            ('INSURANCE', 'Insurance'),
+            ('AADHAAR', 'Aadhaar Card')
+        ]
+    )
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('PENDING', 'Pending'),
+            ('APPROVED', 'Approved'),
+            ('REJECTED', 'Rejected')
+        ],
+        default='PENDING'
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    notes = models.TextField(blank=True)
+
+    def __str__(self):
+        return f"{self.doc_type} for {self.driver.name} ({self.status})"
+
+
+class AdminNotification(models.Model):
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    notification_type = models.CharField(
+        max_length=20,
+        choices=[('ALERT', 'Alert'), ('INFO', 'Info'), ('WARNING', 'Warning')],
+        default='INFO'
+    )
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.created_at}"
 

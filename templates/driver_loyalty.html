@@ -31,12 +31,12 @@
     </div>
     <div class="flex gap-4">
         <div class="bg-surface-container-low px-6 py-4 rounded-xl border border-outline-variant/5">
-            <span class="block text-xs text-on-surface-variant font-medium">TOTAL MILES CLOCKED</span>
-            <span class="text-3xl font-headline font-bold text-primary tracking-tighter">1,248,502</span>
+            <span class="block text-xs text-on-surface-variant font-medium">TOTAL ESTIMATED MILES</span>
+            <span class="text-3xl font-headline font-bold text-primary tracking-tighter">{{ total_miles }}</span>
         </div>
         <div class="bg-surface-container-low px-6 py-4 rounded-xl border border-outline-variant/5">
             <span class="block text-xs text-on-surface-variant font-medium">ACTIVE LOYALTY DRIVERS</span>
-            <span class="text-3xl font-headline font-bold text-primary tracking-tighter">842</span>
+            <span class="text-3xl font-headline font-bold text-primary tracking-tighter">{{ active_loyalty_drivers }}</span>
         </div>
     </div>
 </header>
@@ -100,38 +100,72 @@
         <h2 class="font-headline text-3xl font-bold tracking-tight">Active Performance Cards</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div class="bg-surface-container p-6 rounded-2xl hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
-            <div class="flex items-center gap-4 mb-6">
-                <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20 flex items-center justify-center bg-surface-container-highest">
-                    <span class="material-symbols-outlined text-on-surface">person</span>
+        {% for d in drivers %}
+        <div class="bg-surface-container p-6 rounded-2xl hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-primary/20 flex items-center justify-center bg-surface-container-highest">
+                        <span class="material-symbols-outlined text-on-surface">person</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg text-on-surface">{{ d.name }}</h4>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs px-2.5 py-0.5 rounded-full flex items-center gap-1 font-bold
+                                {% if d.loyalty_tier == 'PLATINUM' %}bg-purple-500/10 text-purple-300 border border-purple-500/20
+                                {% elif d.loyalty_tier == 'GOLD' %}bg-amber-400/10 text-amber-300 border border-amber-400/20
+                                {% elif d.loyalty_tier == 'SILVER' %}bg-slate-400/10 text-slate-300 border border-slate-400/20
+                                {% else %}bg-amber-800/10 text-amber-600 border border-amber-800/20{% endif %}">
+                                <span class="w-1.5 h-1.5 rounded-full 
+                                    {% if d.loyalty_tier == 'PLATINUM' %}bg-purple-300
+                                    {% elif d.loyalty_tier == 'GOLD' %}bg-amber-300
+                                    {% elif d.loyalty_tier == 'SILVER' %}bg-slate-300
+                                    {% else %}bg-amber-600{% endif %}"></span>
+                                {{ d.loyalty_tier }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <h4 class="font-bold text-lg">Vikram Rathore</h4>
-                    <div class="flex items-center gap-2">
-                        <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
-                            <span class="w-1 h-1 bg-primary rounded-full"></span> Elite Status
+                <div class="grid grid-cols-3 gap-4 border-t border-outline-variant/10 pt-4 text-center text-xs">
+                    <div>
+                        <span class="block text-[10px] text-on-surface-variant uppercase mb-1">Star Rating</span>
+                        <span class="font-bold text-primary flex items-center justify-center gap-1">
+                            {{ d.rating }} <span class="material-symbols-outlined text-[14px]">star</span>
                         </span>
+                    </div>
+                    <div class="border-x border-outline-variant/10">
+                        <span class="block text-[10px] text-on-surface-variant uppercase mb-1">Total Trips</span>
+                        <span class="font-bold text-on-surface">{{ d.total_trips }}</span>
+                    </div>
+                    <div>
+                        <span class="block text-[10px] text-on-surface-variant uppercase mb-1">Total Revenue</span>
+                        <span class="font-bold text-on-surface">₹{{ d.total_revenue }}</span>
                     </div>
                 </div>
             </div>
-            <div class="grid grid-cols-3 gap-4 border-t border-outline-variant/10 pt-4">
-                <div class="text-center">
-                    <span class="block text-[10px] text-on-surface-variant uppercase">Star Rating</span>
-                    <span class="font-bold text-primary flex items-center justify-center gap-1">
-                        4.98 <span class="material-symbols-outlined text-[14px]">star</span>
-                    </span>
-                </div>
-                <div class="text-center border-x border-outline-variant/10">
-                    <span class="block text-[10px] text-on-surface-variant uppercase">Acceptance</span>
-                    <span class="font-bold">99%</span>
-                </div>
-                <div class="text-center">
-                    <span class="block text-[10px] text-on-surface-variant uppercase">Net Earnings</span>
-                    <span class="font-bold">$4,280</span>
-                </div>
-            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-3 text-center p-8 bg-surface-container rounded-xl text-on-surface-variant text-sm">
+            No drivers found.
+        </div>
+        {% endfor %}
+    </div>
+    
+    <!-- Pagination Controls -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex items-center justify-between pt-8 mt-4 border-t border-outline-variant/10 text-xs">
+        <div>
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded text-on-surface transition-colors">Previous</a>
+            {% endif %}
+        </div>
+        <span class="text-on-surface-variant">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        <div>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="px-3 py-1.5 bg-surface-container hover:bg-surface-container-high rounded text-on-surface transition-colors">Next</a>
+            {% endif %}
         </div>
     </div>
+    {% endif %}
 </div>
 </div>
 {% endblock %}
